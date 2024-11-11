@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,12 +25,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+<html lang="en">
+  <body
+    className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+  >
+    <header className="w-screen flex justify-center bg-zinc-800 p-6">
+      <Link href="/"><h1 className="text-white text-2xl">Barbearia</h1></Link>
+    </header>
+
+    <main className="flex-grow">{children}</main>
+
+    <footer className="w-full bg-zinc-800 p-4 text-center text-white">
+      © 2024 Barbearia. Todos os direitos reservados.
+    </footer>
+  </body>
+</html>
+
   );
 }

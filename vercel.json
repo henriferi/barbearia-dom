@@ -1,0 +1,9 @@
+{
+    "build": {
+      "env": {
+        "NEXT_PUBLIC_DATABASE_URL": "@database_url"
+      }
+    },
+    "buildCommand": "npm run build"
+  }
+  
