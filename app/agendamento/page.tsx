@@ -4,16 +4,25 @@ import { useState } from 'react';
 import Link from 'next/link';
 import ButtonAgendar from '../components/ButtonAgendar';
 import ButtonConsultar from '../components/ButtonConsultar';
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
+
+
 
 const AgendamentoPage = () => {
   const [nome, setNome] = useState('');
-  const [telefone, setTelefone] = useState('');
+  const [telefone, setTelefone] = useState<string>('');
   const [data, setData] = useState('');
   const [hora, setHora] = useState('');
   const [servico, setServico] = useState('');
 
   const [modalMessage, setModalMessage] = useState(''); // Estado para a mensagem do modal
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a visibilidade do modal
+
+
+  const handleChange = (value?: string) => {  // O valor será string, já que PhoneInput pode retornar string
+    setTelefone(value ?? '');  // Converte undefined para string vazia
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,14 +81,15 @@ const AgendamentoPage = () => {
         </div>
 
         <div>
-          <label htmlFor="telefone" className="block text-sm font-medium">Telefone</label>
-          <input
-            type="text"
+          <label htmlFor="telefone">Telefone</label>
+          <PhoneInput
             id="telefone"
             value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
+            onChange={handleChange}
+            defaultCountry="BR"
+            international
             required
-            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+            className="w-full border-2 border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -108,11 +118,11 @@ const AgendamentoPage = () => {
             max="20:00"
             step="1800"
           />
-          <br/>
+          <br />
           <span className='text-sm'>Escolha horários com intervalos de 30 min ex: 08:00 ou 08:30</span>
         </div>
 
-        <div> 
+        <div>
           <label htmlFor="servico" className="block text-sm font-medium">Serviço</label>
           <select
             id="servico"
@@ -128,10 +138,10 @@ const AgendamentoPage = () => {
             <option value="Outro">Outro</option>
           </select>
         </div>
-        
+
         <div className="flex justify-center">
           <div className="flex flex-col md:flex-row text-center justify-center gap-6 m-6">
-              <ButtonAgendar label="Fazer Agendamento" />
+            <ButtonAgendar label="Fazer Agendamento" />
             <Link href="/listaAgendamentos" passHref>
               <ButtonConsultar label="Consultar Agendamentos" />
             </Link>
