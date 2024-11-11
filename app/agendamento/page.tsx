@@ -81,7 +81,7 @@ const AgendamentoPage = () => {
         </div>
 
         <div>
-          <label htmlFor="hora" className="block text-sm font-medium">Horaa do Serviço</label>
+          <label htmlFor="hora" className="block text-sm font-medium">Hora do Serviço</label>
           <input
             type="time"
             id="hora"
@@ -92,7 +92,7 @@ const AgendamentoPage = () => {
             min="08:00"
             max="20:00"
             step="1800"
-          />
+          /> <br/>
           <span className='text-sm'>Escolha horários com intervalos de 30 min ex: 08:00 ou 08:30</span>
         </div>
 
