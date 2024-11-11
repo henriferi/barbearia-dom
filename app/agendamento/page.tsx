@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react';
-import Link from 'next/link'; // Importe o Link do Next.js
+import Link from 'next/link';
 import ButtonAgendar from '../components/ButtonAgendar';
 import ButtonConsultar from '../components/ButtonConsultar';
 
@@ -11,6 +11,9 @@ const AgendamentoPage = () => {
   const [data, setData] = useState('');
   const [hora, setHora] = useState('');
   const [servico, setServico] = useState('');
+
+  const [modalMessage, setModalMessage] = useState(''); // Estado para a mensagem do modal
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a visibilidade do modal
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,19 +32,31 @@ const AgendamentoPage = () => {
       });
 
       if (response.ok) {
-        alert('Agendamento realizado com sucesso!');
+        setModalMessage('Agendamento realizado com sucesso!'); // Define a mensagem de sucesso
+        setIsModalOpen(true); // Abre o modal
+        clearForm(); // Limpa o formulário
       } else {
-        alert('Erro ao agendar. Tente novamente.');
+        setModalMessage('Erro ao agendar. Tente novamente.');
+        setIsModalOpen(true);
       }
     } catch (error) {
       console.error('Erro ao agendar:', error);
-      alert('Erro ao agendar. Tente novamente.');
+      setModalMessage('Erro ao agendar. Tente novamente.');
+      setIsModalOpen(true);
     }
   };
 
+  // Função para limpar o formulário
+  const clearForm = () => {
+    setNome('');
+    setTelefone('');
+    setData('');
+    setHora('');
+    setServico('');
+  };
 
   return (
-    <div className="max-w-xl mx-auto p-6 ">
+    <div className="max-w-xl mx-auto p-6">
       <h1 className="text-2xl font-semibold text-center mb-6">Agendamento de Serviço</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -92,7 +107,8 @@ const AgendamentoPage = () => {
             min="08:00"
             max="20:00"
             step="1800"
-          /> <br/>
+          />
+          <br/>
           <span className='text-sm'>Escolha horários com intervalos de 30 min ex: 08:00 ou 08:30</span>
         </div>
 
@@ -112,6 +128,7 @@ const AgendamentoPage = () => {
             <option value="Outro">Outro</option>
           </select>
         </div>
+        
         <div className="flex justify-center">
           <div className="flex flex-col md:flex-row text-center justify-center gap-6 m-6">
               <ButtonAgendar label="Fazer Agendamento" />
@@ -120,9 +137,22 @@ const AgendamentoPage = () => {
             </Link>
           </div>
         </div>
-
       </form>
 
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-lg text-center">
+            <p>{modalMessage}</p>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
